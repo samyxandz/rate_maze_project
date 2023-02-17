@@ -1,5 +1,3 @@
-// C++ program to solve Rat in a Maze problem using
-// backtracking
 #include <stdio.h>
 #include <stdbool.h>
 // Maze size
@@ -85,5 +83,7 @@ int main()
                        {0,0,0,1,1,1},
                        {0,0,0,0,0,1} };
     solveMaze(maze);
+     int sol_final[N][N] = { { 0, 0, 0, 0,0,0},{ 0, 0, 0, 0,0,0},{ 0, 0, 0, 0,0,0},{ 0, 0, 0, 0,0,0},{ 0, 0, 0, 0,0,0},{ 0, 0, 0, 0,0,0},{ 0, 0, 0, 0,0,0}
+    
     return 0;
 }
