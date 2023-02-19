@@ -7,18 +7,6 @@ int i, j;
 
 
 
-void printotfile( FILE** ptr){
-fprintf(ptr, "%s", "Welcome to file containing The solution\n The solution is as follows \n \n");
-for (i = 0; i < rows; i++) {
-        for (j = 0; j < cols; j++) {
-            fprintf(ptr,"%d ", solution[i][j]);
-        }
-        fprintf(ptr,"\n");
-    }
-
-
-}
-
 void printSolution() {
 
     printf("Solution:\n");
@@ -63,12 +51,14 @@ int solveMaze(int x, int y) {
 
 int main() {
 
-    File *ptr;
+    FILE *ptr;
     ptr=fopen("solution.txt","w+");
 
 
-    printf("Enter the number of rows and columns of the maze: ");
-    scanf("%d%d", &rows, &cols);
+    printf("Enter the number of rows  of the maze: ");
+    scanf("%d", &rows);
+    printf("Enter the number of columns of the maze: ");
+    scanf("%d", &cols);
 
     printf("Enter the maze (0 for blocked cell, 1 for free cell):\n");
     for (i = 0; i < rows; i++) {
@@ -85,8 +75,14 @@ int main() {
 
     if (solveMaze(startX, startY) == 1) {
         printSolution();
-        printtofile(&ptr);
-
+        fprintf(ptr, "%s", "Welcome to file containing The solution\n The solution is as follows: \n \n");
+for (i = 0; i < rows; i++) {
+        for (j = 0; j < cols; j++) {
+            fprintf(ptr,"%d ", solution[i][j]);
+        }
+        fprintf(ptr,"\n");
+    }
+  fprintf(ptr, "%s","\n \n Here 1 represents free cell and 0 represent bolcked cell");
     } else {
         printf("No solution found.\n");
     }
