@@ -1,89 +1,95 @@
 #include <stdio.h>
-#include <stdbool.h>
-// Maze size
-#define N 6
-  
-bool solveMazeUtil(int maze[N][N], int x, int y,int sol[N][N]);
-  
-// A utility function to print solution matrix sol[N][N] 
-void printSolution(int sol[N][N])
-{
-    for (int i = 0; i < N; i++) {
-        for (int j = 0; j < N; j++)
-            printf(" %d ", sol[i][j]);
+#define MAX_SIZE 20
+
+int maze[MAX_SIZE][MAX_SIZE], solution[MAX_SIZE][MAX_SIZE];
+int rows, cols, startX, startY, endX, endY;
+int i, j;
+
+
+
+void printotfile( FILE** ptr){
+fprintf(ptr, "%s", "Welcome to file containing The solution\n The solution is as follows \n \n");
+for (i = 0; i < rows; i++) {
+        for (j = 0; j < cols; j++) {
+            fprintf(ptr,"%d ", solution[i][j]);
+        }
+        fprintf(ptr,"\n");
+    }
+
+
+}
+
+void printSolution() {
+
+    printf("Solution:\n");
+    for (i = 0; i < rows; i++) {
+        for (j = 0; j < cols; j++) {
+            printf("%d ", solution[i][j]);
+        }
         printf("\n");
     }
 }
-  
-// A utility function to check if x, y is valid index for
-// N*N maze
-bool isSafe(int maze[N][N], int x, int y)
-{
-    // if (x, y outside maze) return false
-    if (x >= 0 && x < N && y >= 0 && y < N && maze[x][y] == 1)
-        return true;
-    return false;
-}
-  
-// This function solves the Maze problem using Backtracking.
-// It mainly uses solveMazeUtil() to solve the problem. It
-// returns false if no path is possible, otherwise return
-// true and prints the path in the form of 1s. Please note
-// that there may be more than one solutions, this function
-// prints one of the feasible solutions.
-bool solveMaze(int maze[N][N])
-{
-    int sol[N][N] = { { 0, 0, 0, 0,0,0},{ 0, 0, 0, 0,0,0},{ 0, 0, 0, 0,0,0},{ 0, 0, 0, 0,0,0},{ 0, 0, 0, 0,0,0},{ 0, 0, 0, 0,0,0},{ 0, 0, 0, 0,0,0}
-                      };
-    if (solveMazeUtil(maze, 0, 0, sol) == false) {
-        printf("Solution doesn't exist");
-        return false;
+
+int solveMaze(int x, int y) {
+    if (x < 0 || x >= rows || y < 0 || y >= cols) {
+        return 0;
     }
-    printSolution(sol);
-    return true;
-}
-  
-// A recursive utility function to solve Maze problem
-bool solveMazeUtil(int maze[N][N], int x, int y, int sol[N][N])
-{
-    // if (x, y is goal) return true
-    if (x == N - 1 && y == N - 1 && maze[x][y] == 1) {
-        sol[x][y] = 1;
-        return true;
+    if (maze[x][y] == 0) {
+        return 0;
     }
-    // Check if maze[x][y] is valid
-    if (isSafe(maze, x, y) == true) {
-        // Check if the current block is already part of
-        // solution path.
-        if (sol[x][y] == 1)
-            return false;
-        // mark x, y as part of solution path
-        sol[x][y] = 1;
-        /* Move forward in x direction */
-        if (solveMazeUtil(maze, x + 1, y, sol) == true)
-            return true;
-        // If moving in x direction doesn't give solution
-        // then Move down in y direction
-        if (solveMazeUtil(maze, x, y + 1, sol) == true)
-            return true;
-        // If none of the above movements work then
-        // BACKTRACK: unmark x, y as part of solution path
-        sol[x][y] = 0;
-        return false;
+    if (x == endX && y == endY) {
+        solution[x][y] = 1;
+        return 1;
     }
-    return false;
+    if (solution[x][y] == 1) {
+        return 0;
+    }
+    solution[x][y] = 1;
+    if (solveMaze(x-1, y) == 1) {
+        return 1;
+    }
+    if (solveMaze(x+1, y) == 1) {
+        return 1;
+    }
+    if (solveMaze(x, y-1) == 1) {
+        return 1;
+    }
+    if (solveMaze(x, y+1) == 1) {
+        return 1;
+    }
+    solution[x][y] = 0;
+    return 0;
 }
-  
-int main()
-{
-    int maze[N][N] = { {1,0,0,0,1,1},
-                       {1,1,0,1,1,1},
-                       {0,1,1,0,0,1},
-                       {0,0,1,1,0,0},
-                       {0,0,0,1,1,1},
-                       {0,0,0,0,0,1} };
-    solveMaze(maze);
-     int sol_final[N][N] = { { 0, 0, 0, 0,0,0},{ 0, 0, 0, 0,0,0},{ 0, 0, 0, 0,0,0},{ 0, 0, 0, 0,0,0},{ 0, 0, 0, 0,0,0},{ 0, 0, 0, 0,0,0},{ 0, 0, 0, 0,0,0}
-    
+
+int main() {
+
+    File *ptr;
+    ptr=fopen("solution.txt","w+");
+
+
+    printf("Enter the number of rows and columns of the maze: ");
+    scanf("%d%d", &rows, &cols);
+
+    printf("Enter the maze (0 for blocked cell, 1 for free cell):\n");
+    for (i = 0; i < rows; i++) {
+        for (j = 0; j < cols; j++) {
+            scanf("%d", &maze[i][j]);
+        }
+    }
+
+    printf("Enter the starting point (row and column): ");
+    scanf("%d%d", &startX, &startY);
+
+    printf("Enter the ending point (row and column): ");
+    scanf("%d%d", &endX, &endY);
+
+    if (solveMaze(startX, startY) == 1) {
+        printSolution();
+        printtofile(&ptr);
+
+    } else {
+        printf("No solution found.\n");
+    }
+
     return 0;
 }
