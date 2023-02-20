@@ -1,5 +1,7 @@
 # rate_maze_project
-project consisting of raze maze solver allocated to group consisting of Tamaghna Choudhuri (registration number 962) and 
+project consisting of raze maze solver allocated to  Tamaghna Choudhuri in Introduction to programming class in first semester of batchelor of engineering 
+,computer science engineering.
+
 
 ## introduction
 
@@ -10,6 +12,6 @@ down. Write a program to simulate the game with a 6×6 maze as given below. Rat 
 S (selected randomly in each game). In case of termination of movement before reaching the
 destination (E), the rat will be allowed to return back to the previous position and take new move.
 Your system will list down and display the movements of the rat (you can use file to write all
-movements).
+movements.
 
 
